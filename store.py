@@ -1,4 +1,4 @@
-from Storage import Storage
+from storage import Storage
 from exceptions import NotEnoughSpace, NotEnoughProduct, InvalidProduct, ZeroQuantity, NegativeQuantity
 
 

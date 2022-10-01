@@ -1,6 +1,6 @@
-from Request import Request
-from Store import Store
-from Shop import Shop
+from request import Request
+from store import Store
+from shop import Shop
 from exceptions import BaseError, InvalidRequest, NotEnoughSpace, InvalidRoute, TooManyDifferentProducts
 
 

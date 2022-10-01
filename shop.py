@@ -1,4 +1,4 @@
-from Store import Store
+from store import Store
 
 
 class Shop(Store):
