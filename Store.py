@@ -39,7 +39,6 @@ class Store(Storage):
                 self._items[name] = self._items.get(name, 0) + self.get_free_space
                 print(f'Часть товаров \033[33m{name} ({self.excess} шт)\033[0m не будет отправлено\n'
                       f'потому что у получателя недостаточно места')
-                # self.excess = 0
 
     def remove(self, name: str, quantity: int) -> None:
         """

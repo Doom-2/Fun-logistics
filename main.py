@@ -65,7 +65,6 @@ def main():
 
                 # If the item has arrived to the recipient
                 storages["магазин"].add(request.product, request.amount)
-                print('Излишек текущего товара ', storages["магазин"].excess)
                 print(f'Курьер доставил {request.amount - storages["магазин"].excess} {request.product} '
                       f'из {request.where_from} в {request.where_to}')
 
@@ -80,7 +79,6 @@ def main():
                 print(f'Курьер забрал {request.amount} {request.product} из {request.where_from}')
 
                 storages["склад"].add(request.product, request.amount)
-                print('Излишек текущего товара ', storages["склад"].excess)
                 print(f'Курьер доставил {request.amount - storages["склад"].excess} {request.product} '
                       f'из {request.where_from} в {request.where_to}')
 
