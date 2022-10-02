@@ -30,15 +30,14 @@ class Store(Storage):
         elif quantity > self._capacity and self.get_free_space == self._capacity:
             self._items[name] = self._items.get(name, 0) + self._capacity
             self.excess = 0
-        elif self.get_free_space > 0:
-            if quantity <= self.get_free_space:
-                self._items[name] = self._items.get(name, 0) + quantity
-                self.excess = 0
-            else:
-                self.excess = quantity - self.get_free_space
-                self._items[name] = self._items.get(name, 0) + self.get_free_space
-                print(f'Часть товаров \033[33m{name} ({self.excess} шт)\033[0m не будет отправлено\n'
-                      f'потому что у получателя недостаточно места')
+        elif quantity <= self.get_free_space:
+            self._items[name] = self._items.get(name, 0) + quantity
+            self.excess = 0
+        else:
+            self.excess = quantity - self.get_free_space
+            self._items[name] = self._items.get(name, 0) + self.get_free_space
+            print(f'Часть товаров \033[33m{name} ({self.excess} шт)\033[0m не будет отправлено\n'
+                  f'потому что у получателя недостаточно места')
 
     def remove(self, name: str, quantity: int) -> None:
         """
