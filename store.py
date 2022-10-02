@@ -27,7 +27,7 @@ class Store(Storage):
         """
         if not self.get_free_space:
             raise NotEnoughSpace
-        elif quantity > self._capacity and self.get_free_space == 0:
+        elif quantity > self._capacity and self.get_free_space == self._capacity:
             self._items[name] = self._items.get(name, 0) + self._capacity
             self.excess = 0
         elif self.get_free_space > 0:
