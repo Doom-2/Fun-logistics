@@ -1,4 +1,4 @@
-# Funny logistics
+# Fun logistics
 ### In-store delivery example
 
 Program run:
