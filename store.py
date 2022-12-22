@@ -36,8 +36,8 @@ class Store(Storage):
         else:
             self.excess = quantity - self.get_free_space
             self._items[name] = self._items.get(name, 0) + self.get_free_space
-            print(f'Часть товаров \033[33m{name} ({self.excess} шт)\033[0m не будет отправлено\n'
-                  f'потому что у получателя недостаточно места')
+            print(f'\033[33m{self.excess} {name}\033[0m cannot be shipped\n'
+                  f'because the recipient does not have enough space')
 
     def remove(self, name: str, quantity: int) -> None:
         """
@@ -52,7 +52,7 @@ class Store(Storage):
             raise ZeroQuantity
         elif quantity < 0:
             raise NegativeQuantity
-        print('\nНужное количество товара есть у отправителя')
+        print('\nThe sender has the right amount of product')
         self._items[name] = self._items.get(name, 0) - quantity
         if self._items[name] == 0:
             self._items.pop(name)

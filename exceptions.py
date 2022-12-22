@@ -1,34 +1,34 @@
 class BaseError(Exception):
-    message = '\nНепредвиденная ошибка.'
+    message = '\nAn unexpected error has occurred.'
 
 
 class InvalidRoute(BaseError):
-    message = '\nМаршрут не найден. Попробуйте снова.'
+    message = '\nThe route was not found. Try again'
 
 
 class InvalidRequest(BaseError):
-    message = '\nНеправильный запрос. Попробуйте снова.'
+    message = '\nIncorrect request. Try again.'
 
 
 class NotEnoughSpace(BaseError):
-    message = '\nНедостаточно места у получателя. Нужно чтобы он освободил или расширил хранилище.'
+    message = '\nThe recipient does not have enough space. Ask him for a storage extension.'
 
 
 class NotEnoughProduct(BaseError):
-    message = '\nНедостаточно товара у отправителя. Попробуйте запросить меньшее количество.'
+    message = '\nThe sender does not have enough items. Try ask him for a smaller quantity.'
 
 
 class InvalidProduct(BaseError):
-    message = '\nУ отправителя нет в наличии такого товара.'
+    message = '\nThe sender does not have this item in stock.'
 
 
 class TooManyDifferentProducts(BaseError):
-    message = '\nУ получателя исчерпан лимит на ассортимент товаров. Может хранить максимум 5 наименований.'
+    message = '\nThe recipient has exhausted the product range limit. He can store a maximum of 5 items.'
 
 
 class ZeroQuantity(BaseError):
-    message = '\nВы ввели нулевое количество товара. Попробуйте снова.'
+    message = '\nZero quantity of items has been entered. Try again.'
 
 
 class NegativeQuantity(BaseError):
-    message = '\nКоличество товара не может быть отрицательным. Попробуйте снова.'
+    message = '\nThe quantity of an item cannot be negative. Try again.'
