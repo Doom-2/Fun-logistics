@@ -15,4 +15,4 @@ Details:
 * Custom Exception Classes
 * Getters are used
 
-![Fun logistic.png](Fun%20logistic.png)
+<img src="/fun_logistic.png" width="50%"/>
