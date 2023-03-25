@@ -1,0 +1,11 @@
+# ignore all
+**
+
+# except
+!google_sheets_to_db/**
+!users/**
+!orders/**
+!entrypoint.sh
+!manage.py
+!poetry.lock
+!pyproject.toml

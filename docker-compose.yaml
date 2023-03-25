@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:15.0-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    restart: always
+    healthcheck:
+      test: pg_isready -U ${DB_USER} -d ${DB_NAME}
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    ports:
+      - "5434:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  api:
+    image: doom2/g-sheet-to-db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: python3 -c 'import http.client;http.client.HTTPConnection("api:8000", timeout=1).request("GET", "/ping/")' || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.gsheets-to-db.schedule: "@every 30s"
+      ofelia.job-exec.gsheets-to-db.command: "python manage.py get_orders ${SPREADSHEET_NAME}"
+
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./static:/project/static
+
+
+  ofelia:
+    image: mcuadros/ofelia:latest
+    depends_on:
+      - api
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+
+  collect_static:
+    build: .
+    env_file:
+      - ./.env
+    entrypoint: ''
+    volumes:
+      - ./static:/project/static
+    command: python3 manage.py collectstatic -c --no-input
+
+volumes:
+  pg_data:
+  static:
