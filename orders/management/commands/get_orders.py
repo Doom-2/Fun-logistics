@@ -2,13 +2,13 @@ import environ
 import gspread
 from django.core.management import BaseCommand
 import sqlalchemy as sa
-from orders.management.commands.load_spreadsheet import gsheet2df
+from .load_spreadsheet import gsheet2df
 
 env = environ.Env()
 
 
 class Command(BaseCommand):
-    help = 'Loads order data from a spreadsheet into DB'
+    help = "Loads order data from a spreadsheet into DB. Format 'python3 manage.py get_orders <spreadsheet_name>'"
 
     def __init__(self):
         super().__init__()

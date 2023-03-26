@@ -15,8 +15,8 @@ services:
       timeout: 5s
       retries: 5
 
-    ports:
-      - "5434:5432"
+#    ports:
+#      - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
 
@@ -38,7 +38,7 @@ services:
 
     labels:
       ofelia.enabled: "true"
-      ofelia.job-exec.gsheets-to-db.schedule: "@every 30s"
+      ofelia.job-exec.gsheets-to-db.schedule: "@every ${UPDATE_INTERVAL}s"
       ofelia.job-exec.gsheets-to-db.command: "python manage.py get_orders ${SPREADSHEET_NAME}"
 
     ports:

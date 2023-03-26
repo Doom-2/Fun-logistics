@@ -13,6 +13,7 @@ env.read_env(Path(str(CUR_DIR)) / '.env')
 
 spreadsheet_name = env('SPREADSHEET_NAME')
 connection_string = env('CONNECTION_STR')
+update_interval = int(env('UPDATE_INTERVAL'))
 
 
 def get_orders():
@@ -25,13 +26,13 @@ def get_orders():
         engine = sa.create_engine(connection_string)
         engine.connect()
         df.to_sql('orders_order', engine, if_exists='replace', index_label='id')
-        print('Successfully loaded data from spreadsheet')
+        print(f'Successfully loaded data from spreadsheet {spreadsheet_name} to DB')
 
     except gspread.exceptions.SpreadsheetNotFound:
         print(f'Spreadsheet {spreadsheet_name} not found.')
 
 
-schedule.every(30).seconds.do(get_orders)
+schedule.every(update_interval).seconds.do(get_orders)
 
 while True:
     schedule.run_pending()

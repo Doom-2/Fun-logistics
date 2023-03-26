@@ -13,4 +13,6 @@ if [ "$DJANGO_SUPERUSER_NAME" ]; then
     --username "$DJANGO_SUPERUSER_NAME"
 fi
 
+python3 manage.py get_orders "$SPREADSHEET_NAME"
+
 exec "$@"
