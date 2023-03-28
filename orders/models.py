@@ -17,7 +17,7 @@ class Order(models.Model):
 
     @property
     def price_rub(self):
-        """Calculate order price in RUB according actual USD rate"""
+        """Calculates order price in RUB according actual USD rate"""
 
         if self.price_usd and USD_RATE:
             return int(self.price_usd * USD_RATE)

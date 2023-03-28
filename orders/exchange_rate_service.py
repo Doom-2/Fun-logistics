@@ -5,7 +5,7 @@ from .exchange_rate_schema import DailyCurrency
 
 class CurrencyCBRRates:
     """
-    Get actual currency rates from CBR API
+    Gets actual currency rates from CBR API
     """
 
     def get_url(self):
@@ -19,7 +19,7 @@ class CurrencyCBRRates:
 
     def get_rate_by_code(self, currency_name: str) -> float:
         """
-        Pass as an argument a specific currency code, 3 capital letters
+        Passes as an argument a specific currency code, 3 capital letters
         """
         try:
             response = requests.get(self.get_url()).json()
