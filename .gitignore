@@ -2,3 +2,4 @@
 __pycache__/
 .env
 static/
+orders/management/commands/google_api_credentials_decrypted.json
