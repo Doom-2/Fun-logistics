@@ -26,6 +26,9 @@ def gsheet2df(spreadsheet_name, sheet_num):
     d_frame.rename(
         columns={'№': 'seq_num', 'заказ №': 'order', 'стоимость,$': 'price_usd', 'срок поставки': 'required_date'},
         inplace=True)
+
+    # Add new column 'price_rub' to DataFrame and replace all empty columns to NumPy 'NaN' value
+    d_frame = d_frame.assign(price_rub=np.nan)
     d_frame = d_frame.replace(r'^\s*$', np.nan, regex=True)
 
     return d_frame
