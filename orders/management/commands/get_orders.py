@@ -20,11 +20,14 @@ class Command(BaseCommand):
     def handle(self,  *args, **kwargs) -> None:
         try:
             self.spreadsheet_name = kwargs['spreadsheet_name']
+
+            # Get Pandas DataFrame from spreadsheet
             df = gsheet2df(self.spreadsheet_name, 0)
             connection_string = env('CONNECTION_STR')
             engine = sa.create_engine(connection_string)
             engine.connect()
             df.to_sql('orders_order', engine, if_exists='replace', index_label='id')
+
             self.stdout.write(
                 self.style.SUCCESS(f'Successfully loaded data from spreadsheet {self.spreadsheet_name} to DB'))
             return

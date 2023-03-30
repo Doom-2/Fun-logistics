@@ -29,7 +29,3 @@ class CurrencyCBRRates:
 
         except KeyError:
             print('There is no such currency code')
-
-
-current_rates = CurrencyCBRRates()
-USD_RATE = current_rates.get_rate_by_code('USD')
