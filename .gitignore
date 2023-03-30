@@ -2,4 +2,4 @@
 __pycache__/
 .env
 static/
-google_api_credentials.json
+orders/google_api_credentials.json
