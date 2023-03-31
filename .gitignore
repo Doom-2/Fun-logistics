@@ -3,3 +3,4 @@ __pycache__/
 .env
 static/
 orders/google_api_credentials.json
+celerybeat-schedule
