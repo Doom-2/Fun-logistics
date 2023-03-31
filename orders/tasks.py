@@ -1,11 +1,9 @@
 from .exchange_rate_service import CurrencyCBRRates
 from google_sheets_to_db.celery import app
 from .models import Order
-from .load_spreadsheet import gsheet2df
+from .spreadsheet_service import gsheet2df, prepare_df
 from pathlib import Path
 import sqlalchemy as sa
-import pandas as pd
-import numpy as np
 import environ
 import gspread
 
@@ -17,7 +15,6 @@ env.read_env(Path(str(CUR_DIR)) / '.env')
 
 spreadsheet_name = env('SPREADSHEET_NAME')
 connection_string = env('CONNECTION_STR')
-update_interval = int(env('UPDATE_INTERVAL'))
 
 
 @app.task
@@ -25,18 +22,12 @@ def get_orders():
     """Loads order data from a spreadsheet into DB"""
 
     try:
-        # Get Pandas DataFrame from spreadsheet
+        # Get Pandas DataFrame from a specific spreadsheet
         df = gsheet2df(spreadsheet_name, 0)
 
-        # Calculate and update the 'price_rub' column according the actual USD rate
-        current_rates = CurrencyCBRRates()
-        usd_rate = current_rates.get_rate_by_code('USD')
-        df.loc[df['price_usd'].notna(), 'price_rub'] = df['price_usd'] * usd_rate
+        prepare_df(df)
 
-        # Pass column 'price rub' to <Int64> safely with <NaN> values handling
-        df['price_rub'] = np.floor(pd.to_numeric(df['price_rub'], errors='coerce')).astype('Int64')
-
-        # Connect to SQL and save DataFrame to Order table with replace all values
+        # Connect to SQL and save DataFrame to <Order> table with replacement of all values
         engine = sa.create_engine(connection_string)
         engine.connect()
         df.to_sql('orders_order', engine, if_exists='replace', index_label='id')
@@ -48,7 +39,7 @@ def get_orders():
 
 @app.task
 def update_price_rub():
-    """Calculates and updates the 'price_rub' field according the actual USD rate"""
+    """Calculates and updates the 'price_rub' field according the actual USD exchange rate"""
 
     current_rates = CurrencyCBRRates()
     usd_rate = current_rates.get_rate_by_code('USD')

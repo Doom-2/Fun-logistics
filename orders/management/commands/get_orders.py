@@ -2,11 +2,8 @@ import environ
 import gspread
 from django.core.management import BaseCommand
 import sqlalchemy as sa
-from orders.load_spreadsheet import gsheet2df
-from orders.exchange_rate_service import CurrencyCBRRates
-import pandas as pd
-import numpy as np
-
+from orders.spreadsheet_service import gsheet2df
+from orders.spreadsheet_service import prepare_df
 env = environ.Env()
 
 
@@ -24,18 +21,12 @@ class Command(BaseCommand):
         try:
             self.spreadsheet_name = kwargs['spreadsheet_name']
 
-            # Get Pandas DataFrame from spreadsheet
+            # Get Pandas DataFrame from a specific spreadsheet
             df = gsheet2df(self.spreadsheet_name, 0)
 
-            # Calculate and update the 'price_rub' column according the actual USD rate
-            current_rates = CurrencyCBRRates()
-            usd_rate = current_rates.get_rate_by_code('USD')
-            df.loc[df['price_usd'].notna(), 'price_rub'] = df['price_usd'] * usd_rate
+            prepare_df(df)
 
-            # Pass column 'price rub' to <Int64> safely with <NaN> values handling
-            df['price_rub'] = np.floor(pd.to_numeric(df['price_rub'], errors='coerce')).astype('Int64')
-
-            # Connect to SQL and save DataFrame to Order table with replace all values
+            # Connect to SQL and save DataFrame to <Order> table with replacement of all values
             connection_string = env('CONNECTION_STR')
             engine = sa.create_engine(connection_string)
             engine.connect()
