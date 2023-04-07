@@ -1,3 +1,5 @@
+from django.shortcuts import redirect
+from django.urls import reverse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -16,6 +18,10 @@ def health_check(request):
     Healthcheck for this API in Docker container
     """
     return Response({'status': 'Ok'})
+
+
+def index(request):
+    return redirect(reverse('order-list'))
 
 
 class OrderViewSet(ModelViewSet):

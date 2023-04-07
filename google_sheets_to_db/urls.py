@@ -17,11 +17,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from orders.views import index
+
 from orders.views import health_check
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ping/', health_check, name='health-check'),
+    path('', index),
     path('', include('orders.urls')),
     path('user/', include('users.urls')),
 ]
