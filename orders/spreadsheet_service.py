@@ -53,3 +53,6 @@ def prepare_df(df: DataFrame):
 
     # Safely pass <price_rub> column to <Int64> with <NaN> values saved
     df['price_rub'] = np.floor(pd.to_numeric(df['price_rub'], errors='coerce')).astype('Int64')
+
+    # Transform <required_date> from string to datetime and then to date with <d.m.Y> as format
+    df['required_date'] = pd.to_datetime(df['required_date'], format='%d.%m.%Y', errors='coerce').dt.date

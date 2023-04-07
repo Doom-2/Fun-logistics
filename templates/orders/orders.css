@@ -1,0 +1,25 @@
+body {
+    background-color: red;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/*table {*/
+/*    border: 1px solid black;*/
+    /*background-color: red;*/
+/*}*/
+
+main {
+    width: 1024px;
+    padding: 5px; /* Поля вокруг текста */
+    background: white; /* Цвет фона */
+    margin: 0 auto; /* Выравниваем слой по центру */
+    opacity: 0.8; /* Значение прозрачности */
+    filter: alpha(Opacity=80); /* Прозрачность в IE */
+}
+
+h2 {
+    color: indianred;
+    text-shadow: black 0 0 2px;
+}

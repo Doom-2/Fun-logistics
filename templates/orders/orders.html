@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders</title>
+    <link href="{% static 'orders/css/orders.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'orders/img/favicon.ico' %}"/>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            formatted_date_price_list = [{% for row in date_price_list %}[new Date("{{ row.0.isoformat }}"), {{ row.1 }}]{% if not forloop.last %}, {% endif %}{% endfor %}]
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'Sales');
+            {% autoescape off %}
+                data.addRows(formatted_date_price_list);
+            {% endautoescape %}
+
+            var options = {
+                explorer: {
+                    axis: 'horizontal',
+                    keepInBounds: true
+                },
+                {#bar: {groupWidth: 5},#}
+                curveType: 'function',
+                legend: {position: 'none'},
+
+                vAxis: {
+                    gridlines: {count: 10,},
+                    title: 'Sales a day, $',
+                    titleTextStyle: {
+                        fontSize: 20,
+                        italic: false,
+                    },
+                    viewWindowMode: 'explicit',
+                    viewWindow: {
+                        min: 0
+                    },
+                },
+
+                hAxis: {
+                    gridlines: {count: 10, color: 'none'},
+                    title: 'Required date',
+                    titleTextStyle: {
+                        fontSize: 20,
+                        italic: false
+                    },
+                    format: 'dd.MM.yyyy',
+                    slantedText: true, slantedTextAngle: 45,
+                },
+                chartArea: {right: 10, top: 30, width: "85%", height: "75%"},
+                backgroundColor: "transparent",
+                is3D: true,
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+            chart.draw(data, options);
+
+        }
+    </script>
+</head>
+<body>
+<div id="headline">
+    <img src="{% static 'orders/img/logo.png' %}" alt="Logo">
+    Fun logistics
+</div>
+<div id="html-frame">
+    <div id="curve_chart"></div>
+    <div class="table-total">
+        <div id="total-price">
+            <h1>Total $</h1>
+            <p id="total-price-val">{{ total_price }}</p>
+        </div>
+        <div id="table-wrapper">
+            <div id="table-scroll">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Seq num</th>
+                        <th>Order ID</th>
+                        <th>Price, $</th>
+                        <th>Price, RUB</th>
+                        <th>Required date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for element in orders %}
+
+                        <tr>
+                            <td>{{ element.seq_num }}</td>
+                            <td>{{ element.order }}</td>
+                            <td>{{ element.get_price_usd }}</td>
+                            <td>{{ element.price_rub }}</td>
+                            <td>{{ element.required_date | date:"d.m.Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

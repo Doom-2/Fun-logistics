@@ -14,3 +14,11 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.order)
+
+    @property
+    def get_price_usd(self):
+        """Converts float to int if possible"""
+
+        if self.price_usd and self.price_usd == int(self.price_usd):
+            self.price_usd = int(self.price_usd)
+        return self.price_usd
