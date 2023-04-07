@@ -16,9 +16,9 @@ app.autodiscover_tasks()
 
 # celery periodic tasks
 app.conf.beat_schedule = {
-    'update_price_rub_each_hour':
+    'update_price_rub_daily_9_am':
         {
             'task': 'orders.tasks.update_price_rub',
-            'schedule': crontab(hour='*', minute=0),  # run task at the beginning of each hour
+            'schedule': crontab(minute=0, hour=9),  # run task every day at 9 am
         },
 }
