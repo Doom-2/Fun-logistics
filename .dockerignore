@@ -5,6 +5,7 @@
 !google_sheets_to_db/**
 !users/**
 !orders/**
+!templates/**
 !entrypoint.sh
 !manage.py
 !poetry.lock
